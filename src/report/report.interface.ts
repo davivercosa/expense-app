@@ -1,31 +1,18 @@
-// import { IsNumber } from "class-validator";
+export enum ReportType {
+  Income = 'income',
+  Expense = 'expense',
+}
 
-// export interface CreateReportDto {
-//   report: {
-//     @IsNumber()
-//     id: string;
-//     source: string;
-//     amount: number;
-//     created_at: Date;
-//     updated_at: Date;
-//     type: ReportType;
-//   }[];
-// }
+export interface Report {
+  id: number;
+  source: string;
+  amount: number;
+  created_at: Date;
+  updated_at: Date;
+  type: ReportType;
+}
 
-// enum ReportType {
-//   Income = 'income',
-//   Expense = 'expense',
-// }
-
-// export class CreateReportDto {
-//   report: {
-//     @IsNumber()
-//     id: string;
-
-//     source: string;
-//     amount: number;
-//     created_at: Date;
-//     updated_at: Date;
-//     type: ReportType;
-//   }[];
-// }
+export interface UpdateReport {
+  amount?: number;
+  source?: string;
+}
