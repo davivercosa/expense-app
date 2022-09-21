@@ -113,19 +113,26 @@ export class ReportController {
 
   @Delete('/:id')
   async deleteReport(
-    @Param() params: { id: string; type: string },
+    @Param('type', new ParseEnumPipe(ReportType)) type: string,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<string> {
-    const reportId = params.id;
-    const reportType = params.type;
+    const doesReportExist = await this.reportService.getReportById(id, type);
 
-    if (isNaN(parseInt(reportId)))
+    const report = <Report[]>doesReportExist.message;
+
+    if (report.length === 0)
       throw new HttpException(
-        'Income Report id is not a number',
-        HttpStatus.BAD_REQUEST,
+        `The combination data of ${type} report and report id ${id} was not found on our data base!`,
+        HttpStatus.NOT_FOUND,
       );
 
-    const resp = await this.reportService.deleteReport(parseInt(reportId));
+    const resp = await this.reportService.deleteReport(id);
 
-    return resp;
+    if (resp.status === false)
+      throw new HttpException('Something went wrong :(', HttpStatus.NOT_FOUND);
+
+    const message = <string>resp.message;
+
+    return message;
   }
 }

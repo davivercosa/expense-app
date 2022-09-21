@@ -95,7 +95,18 @@ export class ReportService {
     }
   }
 
-  async deleteReport(reportId: number) {
-    return `${reportId}`;
+  async deleteReport(
+    id: number,
+  ): Promise<{ status: boolean; message: string | Error }> {
+    try {
+      fakeDataBase.splice(id - 1, 1);
+
+      return { status: true, message: `Report deleted successfully` };
+    } catch (error) {
+      const err: Error = error;
+      console.log(err);
+
+      return { status: false, message: err };
+    }
   }
 }
